@@ -1,0 +1,7 @@
+# Escludi file e cartelle di sistema o temporanei
+.vscode/
+AppData/
+*.log
+*.tmp
+__pycache__/
+*.pyc
