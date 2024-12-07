@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from app.extensions import db, jwt
 from app.swagger import api
 from flask.json.provider import DefaultJSONProvider
@@ -15,6 +16,8 @@ class CustomJSONProvider(DefaultJSONProvider):
 
 def create_app():
     app = Flask(__name__)
+    # Abilita CORS su tutte le route
+    CORS(app)
     app.config.from_object("config.Config")
 
     # Configura il provider JSON personalizzato

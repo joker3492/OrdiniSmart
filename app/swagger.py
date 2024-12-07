@@ -26,6 +26,7 @@ from app.schemas.ordinedettaglio_schema import (
     aggiorna_stato_model,
 )
 
+
 # Configurazione dell'API RESTful con Swagger
 api = Api(
     title="Ordinismart API",
