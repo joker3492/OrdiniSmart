@@ -168,3 +168,30 @@ def _propaga_stato_all_ordine(id_ordine):
             f"Errore durante la propagazione dello stato per l'ordine {id_ordine}: {str(e)}"
         )
         raise
+
+def visualizza_dettagli_per_admin(admin_id):
+    """
+    Recupera tutti i dettagli degli ordini associati ai prodotti gestiti dall'admin,
+    includendo id ordine, nome prodotto e altri dettagli.
+    """
+    try:
+        dettagli = (
+            OrdineDettaglio.query
+            .join(Prodotto, Prodotto.id == OrdineDettaglio.id_prodotto)
+            .filter(Prodotto.id_admin == admin_id)
+            .all()
+        )
+        return [
+            {
+                "id": dettaglio.id,
+                "id_ordine": dettaglio.id_ordine,  # Aggiunge l'ID ordine
+                "id_prodotto": dettaglio.id_prodotto,
+                "nome_prodotto": dettaglio.prodotto.nome if dettaglio.prodotto else None,
+                "quantita": dettaglio.quantita,
+                "prezzo_unitario": dettaglio.prezzo_unitario,
+                "stato": dettaglio.stato.descrizione if dettaglio.stato else None,  # Descrizione dello stato
+            }
+            for dettaglio in dettagli
+        ]
+    except Exception as e:
+        raise ValueError(f"Errore durante il recupero dei dettagli per admin: {str(e)}")

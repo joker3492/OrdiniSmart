@@ -5,10 +5,12 @@ from app.services.auth_service import verifica_admin
 from app.services.ordinedettaglio_service import (
     aggiorna_stato_dettaglio,
     visualizza_dettagli_ordine,
+    visualizza_dettagli_per_admin,
 )
 from app.schemas.ordinedettaglio_schema import (
     ordine_dettaglio_output_model,
     ordine_output_model,
+    dettagli_per_admin_output_model,
     aggiorna_stato_model,  # Importa correttamente il modello
 )
 
@@ -22,7 +24,7 @@ ordine_dettaglio_ns.models[ordine_dettaglio_output_model.name] = (
 )
 ordine_dettaglio_ns.models[ordine_output_model.name] = ordine_output_model
 ordine_dettaglio_ns.models[aggiorna_stato_model.name] = aggiorna_stato_model
-
+ordine_dettaglio_ns.models[dettagli_per_admin_output_model.name] = dettagli_per_admin_output_model
 
 @ordine_dettaglio_ns.route("/<int:ordine_id>")
 class DettagliOrdine(Resource):
@@ -72,3 +74,18 @@ class AggiornaStatoDettaglio(Resource):
         except Exception as e:
             print(f"Errore imprevisto: {str(e)}")
             return {"message": "Errore interno del server."}, 500
+
+@ordine_dettaglio_ns.route("/admin_dettagli")
+class OrdineDettaglioAdmin(Resource):
+    @jwt_required()
+    @ordine_dettaglio_ns.marshal_with(dettagli_per_admin_output_model, as_list=True)
+    def get(self):
+        """
+        Recupera tutti i dettagli degli ordini associati ai prodotti gestiti dall'admin.
+        """
+        current_admin_id = get_jwt_identity()  # Ottieni l'ID dell'admin autenticato
+        try:
+            dettagli = visualizza_dettagli_per_admin(current_admin_id)
+            return dettagli, 200
+        except Exception as e:
+            ordine_dettaglio_ns.abort(400, f"Errore durante il recupero: {str(e)}")

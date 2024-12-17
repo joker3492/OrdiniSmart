@@ -24,6 +24,7 @@ from app.schemas.ordinedettaglio_schema import (
     ordine_dettaglio_output_model,
     ordine_output_model,
     aggiorna_stato_model,
+    dettagli_per_admin_output_model
 )
 
 
@@ -61,6 +62,7 @@ ordine_dettaglio_ns.models[ordine_dettaglio_output_model.name] = (
 )
 ordine_dettaglio_ns.models[ordine_output_model.name] = ordine_output_model
 ordine_dettaglio_ns.models[aggiorna_stato_model.name] = aggiorna_stato_model
+ordine_dettaglio_ns.models[dettagli_per_admin_output_model.name] = dettagli_per_admin_output_model
 
 
 # Registra i namespace

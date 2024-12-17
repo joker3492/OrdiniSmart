@@ -16,8 +16,11 @@ class CustomJSONProvider(DefaultJSONProvider):
 
 def create_app():
     app = Flask(__name__)
-    # Abilita CORS su tutte le route
-    CORS(app)
+    # Configura CORS per permettere richieste dal front-end
+    CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, 
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+         allow_headers=["Content-Type", "Authorization"])
+         
     app.config.from_object("config.Config")
 
     # Configura il provider JSON personalizzato

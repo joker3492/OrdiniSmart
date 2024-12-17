@@ -48,3 +48,16 @@ ordine_output_model = ordine_dettaglio_ns.model(
         ),
     },
 )
+
+# Modello per il risultato aggregato dei dettagli ordine gestiti dall'admin
+dettagli_per_admin_output_model = ordine_dettaglio_ns.model(
+    "DettagliPerAdmin",
+    {
+        "id": fields.Integer(readOnly=True, description="ID del dettaglio ordine"),
+        "id_ordine": fields.Integer(description="ID dell'ordine"),
+        "nome_prodotto": fields.String(description="Nome del prodotto"),
+        "quantita": fields.Integer(description="Quantità del prodotto"),
+        "prezzo_unitario": fields.Float(description="Prezzo unitario del prodotto"),
+        "stato": fields.String(description="Stato del dettaglio ordine"),
+    },
+)
